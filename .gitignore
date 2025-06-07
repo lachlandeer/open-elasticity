@@ -1,3 +1,5 @@
 _extras/*
 sandbox/*
 src/data/*
+out/
+logs/
