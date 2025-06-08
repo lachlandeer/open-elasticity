@@ -73,3 +73,19 @@ rule compute_brand_prices:
         "{runR} {input.script} --data {input.data} \
             --out {output.data} \
             > {log} 2>&1"
+
+## merge_brand_panel: joins brand share and price data into a panel
+rule merge_brand_panel:
+    input:
+        script = config["src_data_mgt"] + "merge_brand_panel.R",
+        shares = config["out_data"] + "brand_shares.csv",
+        prices = config["out_data"] + "brand_prices.csv"
+    output:
+        data = config["out_data"] + "brand_panel.csv"
+    log:
+        config["log"] + "data_cleaning/merge_brand_panel.txt"
+    shell:
+        "{runR} {input.script} --shares {input.shares} \
+            --prices {input.prices} \
+            --out {output.data} \
+            > {log} 2>&1"
