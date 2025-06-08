@@ -27,6 +27,9 @@ logAll = "2>&1"
 ## all            : build paper and slides that are the core of the project
 rule all:
     input:
+        prices = config["out_data"] + "brand_prices.csv",
+        shares = config["out_data"] + "brand_shares.csv"
+        # config["out"] + "data/cleaned_purchases.csv"
         # paper_pdf     = PROJ_NAME + ".pdf",
         # beamer_slides = PROJ_NAME + "_slides.pdf"
 

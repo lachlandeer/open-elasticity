@@ -3,3 +3,4 @@ sandbox/*
 src/data/*
 out/
 logs/
+.snakemake
