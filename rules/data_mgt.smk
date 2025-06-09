@@ -144,3 +144,16 @@ rule convert_prices_to_eur:
         config["log"] + "data_cleaning/convert_prices_to_eur.txt"
     shell:
         "{runR} {input.script} --data {input.data} --rates {input.rates} --out {output.data} > {log} 2>&1"
+
+# Trim to common country-week overlap
+rule trim_common_weeks:
+    input:
+        script = config["src_data_mgt"] + "trim_common_weeks.R",
+        data   = config["out_data"] + "brand_panel_burnin_eur.csv"
+    output:
+        trimmed = config["out_data"] + "brand_panel_burnin_eur_trimmed.csv"
+    log:
+        config["log"] + "data_cleaning/trim_by_common_weeks.txt"
+    shell:
+        "{runR} {input.script} --data {input.data} --out {output.trimmed} > {log} 2>&1"
+
