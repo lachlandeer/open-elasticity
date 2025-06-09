@@ -27,7 +27,11 @@ logAll = "2>&1"
 ## all            : build paper and slides that are the core of the project
 rule all:
     input:
-        data = config["out_data"] + "brand_panel.csv"
+        #data = config["out_data"] + "brand_panel.csv",
+        # data = config["out_data"] + "brand_panel_filter_burnin.csv",
+        data = config["out_data"] + "brand_panel_burnin_eur.csv",
+        nests = config["out_data"] + "brand_nests.csv",
+        # rates = config["out_data"] + "exchange_rates_eur.csv"
         # prices = config["out_data"] + "brand_prices.csv",
         # shares = config["out_data"] + "brand_shares.csv"
         # config["out"] + "data/cleaned_purchases.csv"

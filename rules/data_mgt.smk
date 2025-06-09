@@ -89,3 +89,58 @@ rule merge_brand_panel:
             --prices {input.prices} \
             --out {output.data} \
             > {log} 2>&1"
+
+## assign_brand_nests: creates a nest classification for each brand
+rule assign_brand_nests:
+    input:
+        script = config["src_data_mgt"] + "assign_privatelabel_nests.R",
+        data = config["out_data"] + "cleaned_purchases_filtered.csv"
+    output:
+        nests = config["out_data"] + "brand_nests.csv"
+    log:
+        config["log"] + "data_cleaning/assign_brand_nests.txt"
+    shell:
+        "{runR} {input.script} \
+            --data {input.data} \
+            --out {output.nests} \
+            > {log} 2>&1"
+
+## filter_burnin_weeks: drops early burn-in weeks from the panel
+rule filter_burnin_weeks:
+    input:
+        script = config["src_data_mgt"] + "filter_burnin_weeks.R",
+        data   = config["out_data"] + "brand_panel.csv"
+    output:
+        filtered = config["out_data"] + "brand_panel_filter_burnin.csv"
+    params:
+        burnin_weeks = 26
+    log:
+        config["log"] + "data_cleaning/filter_burnin_weeks.txt"
+    shell:
+        "{runR} {input.script} --data {input.data} \
+            --burnin_weeks {params.burnin_weeks} \
+            --out {output.filtered} > {log} 2>&1"
+
+## get_exchange_rates: fetches EUR→USD and EUR→GBP weekly exchange rates from 2014–2023
+rule get_exchange_rates:
+    input:
+        script = config["src_data_mgt"] + "get_exchange_rates.R"
+    output:
+        rates = config["out_data"] + "exchange_rates_eur.csv"
+    log:
+        config["log"] + "data_cleaning/get_exchange_rates.txt"
+    shell:
+        "{runR} {input.script} > {log} 2>&1"
+
+## convert_prices_to_eur: Converts brand-level prices into EUR using weekly exchange rates
+rule convert_prices_to_eur:
+    input:
+        script = config["src_data_mgt"] + "convert_to_eur.R",
+        data = config["out_data"] + "brand_panel_filter_burnin.csv",
+        rates = config["out_data"] + "exchange_rates_eur.csv"
+    output:
+        data = config["out_data"] + "brand_panel_burnin_eur.csv",
+    log:
+        config["log"] + "data_cleaning/convert_prices_to_eur.txt"
+    shell:
+        "{runR} {input.script} --data {input.data} --rates {input.rates} --out {output.data} > {log} 2>&1"
