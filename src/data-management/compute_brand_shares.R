@@ -1,8 +1,8 @@
-#' compute_brand_shares.R
+#' compute_brand_retailer_shares.R
 #'
 #' contributors: @lachlandeer
 #'
-#' Compute weekly brand market shares and outside shares
+#' Compute weekly brand-retailer market shares and outside shares
 
 # Libraries
 library(optparse)
@@ -23,8 +23,8 @@ option_list = list(
               metavar = "character"),
   make_option(c("-o", "--out"),
               type = "character",
-              default = "brand_shares.csv",
-              help = "output CSV with brand-level shares [default = %default]",
+              default = "brand_retailer_shares.csv",
+              help = "output CSV with brand-retailer-level shares [default = %default]",
               metavar = "character")
 )
 
@@ -40,9 +40,9 @@ if (is.null(opt$data) | is.null(opt$active)) {
 df_clean <- read_csv(opt$data)
 active_by_week <- read_csv(opt$active)
 
-# ---- Step 1: Count buyers per brand per week-country ----
+# ---- Step 1: Count buyers per brand-retailer per country-week ----
 brand_buyers <- df_clean %>%
-  group_by(country, year_week, brand) %>%
+  group_by(country, year_week, brand, retailer) %>%
   summarise(n_brand_buyers = n_distinct(panelist), .groups = "drop")
 
 # ---- Step 2: Merge with active panelist counts ----
@@ -52,7 +52,7 @@ brand_shares <- brand_buyers %>%
     share = n_brand_buyers / n_active
   )
 
-# ---- Step 3: Compute outside shares ----
+# ---- Step 3: Compute outside shares per country-week ----
 outside_share <- brand_shares %>%
   group_by(country, year_week) %>%
   summarise(
@@ -61,7 +61,7 @@ outside_share <- brand_shares %>%
     .groups = "drop"
   )
 
-# ---- Step 4: Finalize brand shares panel ----
+# ---- Step 4: Finalize brand-retailer panel with log share diffs ----
 brand_shares <- brand_shares %>%
   left_join(outside_share, by = c("country", "year_week")) %>%
   mutate(
@@ -70,4 +70,4 @@ brand_shares <- brand_shares %>%
 
 # ---- Write output ----
 write_csv(brand_shares, opt$out)
-message("✅ Brand shares written to: ", opt$out)
+message("✅ Brand-retailer shares written to: ", opt$out)
