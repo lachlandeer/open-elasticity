@@ -118,6 +118,19 @@ rule merge_private_label:
     shell:
         "{runR} {input.script} --data {input.data} --pl_file {input.pl_info} --out {output.merged} > {log} 2>&1"
 
+## compute_within_nest_share: compute within-nest shares for nested logit models
+rule compute_within_nest_share:
+    input:
+        script = config["src_data_mgt"] + "compute_within_nest_share.R",
+        data   = config["out_data"] + "demand_data.csv"
+    output:
+        data = config["out_data"] + "demand_data_nested_pl.csv"
+    log:
+        config["log"] + "data_cleaning/compute_within_nest_share.txt"
+    shell:
+        "{runR} {input.script} --data {input.data} --out {output.data} > {log} 2>&1"
+
+
 ## filter_burnin_weeks: drops early burn-in weeks from the panel
 rule filter_burnin_weeks:
     input:

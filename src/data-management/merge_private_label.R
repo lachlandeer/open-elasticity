@@ -40,7 +40,7 @@ pl_info <- read_csv(opt$pl_file, show_col_types = FALSE)
 
 # ---- Merge ----
 panel <- panel %>%
-  left_join(pl_info, by = c("country", "brand"))
+  left_join(pl_info, by = c("country", "year_week", "brand"))
 
 # ---- Check and warn if any PL values are missing ----
 missing_pl <- panel %>% 
