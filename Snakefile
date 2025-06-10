@@ -30,8 +30,9 @@ rule all:
         #data = config["out_data"] + "brand_panel.csv",
         # data = config["out_data"] + "brand_panel_filter_burnin.csv",
         # data = config["out_data"] + "brand_panel_burnin_eur.csv",
-        data = config["out_data"] + "brand_panel_burnin_eur_trimmed.csv",
-        nests = config["out_data"] + "brand_nests.csv",
+        demand_data = config["out_data"] + "demand_data.csv"
+        #data = config["out_data"] + "brand_panel_burnin_eur_trimmed_characteristics.csv",
+        #nests = config["out_data"] + "brand_nests.csv",
         # rates = config["out_data"] + "exchange_rates_eur.csv"
         # prices = config["out_data"] + "brand_prices.csv",
         # shares = config["out_data"] + "brand_shares.csv"

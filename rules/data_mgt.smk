@@ -105,6 +105,19 @@ rule assign_brand_nests:
             --out {output.nests} \
             > {log} 2>&1"
 
+## merge_private_label: appends private label classification to trimmed brand panel
+rule merge_private_label:
+    input:
+        script   = config["src_data_mgt"] + "merge_private_label.R",
+        data     = config["out_data"] + "brand_panel_burnin_eur_trimmed.csv",
+        pl_info  = config["out_data"] + "brand_nests.csv"
+    output:
+        merged   = config["out_data"] + "brand_panel_burnin_eur_trimmed_characteristics.csv"
+    log:
+        config["log"] + "data_cleaning/merge_private_label.txt"
+    shell:
+        "{runR} {input.script} --data {input.data} --pl_file {input.pl_info} --out {output.merged} > {log} 2>&1"
+
 ## filter_burnin_weeks: drops early burn-in weeks from the panel
 rule filter_burnin_weeks:
     input:
@@ -156,4 +169,16 @@ rule trim_common_weeks:
         config["log"] + "data_cleaning/trim_by_common_weeks.txt"
     shell:
         "{runR} {input.script} --data {input.data} --out {output.trimmed} > {log} 2>&1"
+
+## construct_hausman_iv: generates Hausman-style instruments based on average prices in other countries
+rule construct_hausman_iv:
+    input:
+        script = config["src_data_mgt"] + "construct_hausman_iv.R",
+        data   = config["out_data"] + "brand_panel_burnin_eur_trimmed_characteristics.csv"
+    output:
+        iv_data = config["out_data"] + "demand_data.csv"
+    log:
+        config["log"] + "data_cleaning/construct_hausman_iv.txt"
+    shell:
+        "{runR} {input.script} --data {input.data} --out {output.iv_data} > {log} 2>&1"
 
