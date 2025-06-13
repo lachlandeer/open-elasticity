@@ -46,50 +46,33 @@ country_index <- panel %>%
   mutate(iv_id = row_number())
 
 # ---- Function to compute IVs for one country-week ----
-compute_iv <- function(this_country, this_week) {
-  focal <- panel %>%
+compute_iv <- function(this_country, this_week, panel_data) {
+  # Subset focal and others
+  focal <- panel_data %>%
     filter(country == this_country, year_week == this_week)
 
-  others <- panel %>%
+  others <- panel_data %>%
     filter(country != this_country, year_week == this_week)
 
-  # IV1: avg price across all other countries
+  # IV1: average price across all other countries
   iv1_all <- others %>%
     summarise(price_other = mean(price_per_100g, na.rm = TRUE))
 
-  # IV2: avg price in each other country
-  iv2 <- others %>%
-    group_by(country) %>%
-    summarise(price_avg = mean(price_per_100g, na.rm = TRUE), .groups = "drop") %>%
-    inner_join(country_index, by = "country") %>%
-    mutate(varname = paste0("price_other_", iv_id)) %>%
-    select(varname, price_avg) %>%
-    pivot_wider(names_from = varname, values_from = price_avg)
-
-  # IV1-nest: avg price in same nest (all other countries)
+  # IV1-nest: average price in same nest across other countries
   nest_val <- focal$nest[1]
   iv1_nest <- others %>%
     filter(nest == nest_val) %>%
     summarise(price_other_within_nest = mean(price_per_100g, na.rm = TRUE))
 
-  # IV2-nest: avg price in same nest by country
-  iv2_nest <- others %>%
-    filter(nest == nest_val) %>%
-    group_by(country) %>%
-    summarise(price_avg = mean(price_per_100g, na.rm = TRUE), .groups = "drop") %>%
-    inner_join(country_index, by = "country") %>%
-    mutate(varname = paste0("price_other_within_nest_", iv_id)) %>%
-    select(varname, price_avg) %>%
-    pivot_wider(names_from = varname, values_from = price_avg)
-
-  # Combine
+  # Combine and return
   tibble(country = this_country, year_week = this_week) %>%
-    bind_cols(iv1_all, iv1_nest, iv2, iv2_nest)
+    bind_cols(iv1_all, iv1_nest)
 }
+
 
 # ---- Compute all IVs ----
 iv_data <- country_weeks %>%
-  pmap_dfr(~ compute_iv(..1, ..2))
+  pmap_dfr(~ compute_iv(..1, ..2, panel_data = panel))
 
 # ---- Merge with panel ----
 panel_iv <- panel %>%

@@ -110,11 +110,26 @@ rule merge_private_label:
     input:
         script   = config["src_data_mgt"] + "merge_private_label.R",
         data     = config["out_data"] + "brand_panel_burnin_eur_trimmed.csv",
+        # data     = config["out_data"] + "brand_panel_burnin_eur.csv",
         pl_info  = config["out_data"] + "brand_nests.csv"
     output:
         merged   = config["out_data"] + "brand_panel_burnin_eur_trimmed_characteristics.csv"
     log:
         config["log"] + "data_cleaning/merge_private_label.txt"
+    shell:
+        "{runR} {input.script} --data {input.data} --pl_file {input.pl_info} --out {output.merged} > {log} 2>&1"
+
+## merge_private_label_start: appends private label classification to trimmed (start only) brand panel
+rule merge_private_label_start:
+    input:
+        script   = config["src_data_mgt"] + "merge_private_label.R",
+        data     = config["out_data"] + "brand_panel_burnin_eur_trimmed_start.csv",
+        # data     = config["out_data"] + "brand_panel_burnin_eur.csv",
+        pl_info  = config["out_data"] + "brand_nests.csv"
+    output:
+        merged   = config["out_data"] + "brand_panel_burnin_eur_trimmed_start_characteristics.csv"
+    log:
+        config["log"] + "data_cleaning/merge_private_label_start.txt"
     shell:
         "{runR} {input.script} --data {input.data} --pl_file {input.pl_info} --out {output.merged} > {log} 2>&1"
 
@@ -127,6 +142,18 @@ rule compute_within_nest_share:
         data = config["out_data"] + "demand_data_nested_pl.csv"
     log:
         config["log"] + "data_cleaning/compute_within_nest_share.txt"
+    shell:
+        "{runR} {input.script} --data {input.data} --out {output.data} > {log} 2>&1"
+
+## compute_within_nest_share: compute within-nest shares for nested logit models
+rule compute_within_nest_share_elasticity:
+    input:
+        script = config["src_data_mgt"] + "compute_within_nest_share.R",
+        data   = config["out_data"] + "brand_panel_burnin_eur_trimmed_start_characteristics.csv"
+    output:
+        data = config["out_data"] + "elasticity_data_nested_pl.csv"
+    log:
+        config["log"] + "data_cleaning/compute_within_nest_share_elasticity.txt"
     shell:
         "{runR} {input.script} --data {input.data} --out {output.data} > {log} 2>&1"
 
@@ -180,6 +207,18 @@ rule trim_common_weeks:
         trimmed = config["out_data"] + "brand_panel_burnin_eur_trimmed.csv"
     log:
         config["log"] + "data_cleaning/trim_by_common_weeks.txt"
+    shell:
+        "{runR} {input.script} --data {input.data} --out {output.trimmed} > {log} 2>&1"
+
+# Trim to common country-week start_only
+rule trim_common_weeks_start_only:
+    input:
+        script = config["src_data_mgt"] + "trim_common_weeks_start.R",
+        data   = config["out_data"] + "brand_panel_burnin_eur.csv"
+    output:
+        trimmed = config["out_data"] + "brand_panel_burnin_eur_trimmed_start.csv"
+    log:
+        config["log"] + "data_cleaning/trim_by_common_weeks_start.txt"
     shell:
         "{runR} {input.script} --data {input.data} --out {output.trimmed} > {log} 2>&1"
 
