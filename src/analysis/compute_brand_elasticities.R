@@ -45,25 +45,28 @@ vcov_mat <- vcov(iv_model)[
 ]
 
 # ---- Compute brand-level elasticities and SEs ----
-brand_elasticity <- elasticity_data %>%
-  group_by(country, brand) %>%
-  summarise(
-    avg_grad_alpha = mean(price_per_100g * (1 - sigma_hat * within_nest_share) * (1 - share), na.rm = TRUE),
-    avg_grad_sigma = mean(-alpha_hat * price_per_100g * within_nest_share * (1 - share), na.rm = TRUE),
-    avg_elasticity = mean(alpha_hat * price_per_100g * (1 - sigma_hat * within_nest_share) * (1 - share), na.rm = TRUE),
-    .groups = "drop"
-  ) %>%
-  rowwise() %>%
-  mutate(
-    grad = list(c(avg_grad_alpha, avg_grad_sigma)),
-    se_elasticity = {
-      v <- matrix(unlist(grad), nrow = 2, ncol = 1)
-      sqrt(as.numeric(t(v) %*% vcov_mat %*% v))
-    },
-    abs_t_stat = abs(avg_elasticity / se_elasticity),
-    p_value = 2 * (1 - pnorm(abs_t_stat))
-  ) %>%
-  ungroup()
+brand_elasticity <- 
+    elasticity_data %>%
+    group_by(country, brand) %>%
+    summarise(
+        avg_grad_alpha = mean(price_per_100g * (1 - sigma_hat * within_nest_share) * (1 - share), na.rm = TRUE),
+        avg_grad_sigma = mean(-alpha_hat * price_per_100g * within_nest_share * (1 - share), na.rm = TRUE),
+        avg_elasticity = mean(alpha_hat * price_per_100g * (1 - sigma_hat * within_nest_share) * (1 - share), na.rm = TRUE),
+        .groups = "drop"
+    ) %>%
+    rowwise() %>%
+    mutate(
+        grad = list(c(avg_grad_alpha, avg_grad_sigma)),
+        se_elasticity = {
+        v <- matrix(unlist(grad), nrow = 2, ncol = 1)
+        sqrt(as.numeric(t(v) %*% vcov_mat %*% v))
+        },
+        abs_t_stat = abs(avg_elasticity / se_elasticity),
+        p_value = 2 * (1 - pnorm(abs_t_stat))
+    ) %>%
+    ungroup() %>%
+    select(country, brand, elasticity = avg_elasticity, se = se_elasticity, p_value)
+
 
 # ---- Write output ----
 write_csv(brand_elasticity, opt$out)
