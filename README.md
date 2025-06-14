@@ -54,12 +54,39 @@ pip install -r requirements.txt
 
 3. **Initialize R Environment**
 
-In R:
+We utilize many additional R packages inside the scripts that build our project.
+To ensure that our project runs on every machine without issues relating to R packages not being installed we utilize `renv` to control the list of packages needed to run this example, and to monitor the version of the package we use.
 
-```r
-install.packages("renv")
-renv::restore()
+Once you have completed the installation instructions above, we have provided a simple command to install renv.
+Open a terminal and navigate to this directory.
+Then in the terminal enter the following command to install renv:
+
+``` bash
+snakemake --cores 1 renv_install
 ```
+
+Then you will need to provide consent for `renv` to be able to write files to your system:
+
+``` bash
+snakemake --cores 1 renv_consent
+```
+
+Once this is complete you can use renv to create a separate R environment that contains the packages we use in our example by entering the following command into the terminal:
+
+``` bash
+snakemake --cores 1 renv_init
+```
+
+The above command will initialize a separate R environment for this project.
+
+Now we will install the necessary packages (and their precise versions) which are stored in the `renv.lock` file:
+
+``` bash
+snakemake --cores 1 renv_restore
+```
+
+This will install all the packages we need. It may take a while.
+
 
 
 ## 🚀 Running the Pipeline
@@ -89,3 +116,12 @@ snakemake --dag | dot -Tpdf > dag.pdf
 - `results/analysis/nested_logit_model.rds`: Final IV Nested Logit model object
 - `results/analysis/brand_elasticities.csv`: Computed own- and cross-price elasticities
 - Visual DAGs: `dag.pdf`, `filegraph.pdf`, `rulegraph.pdf`
+
+## Visualization of the Workflow
+
+Snakemake workflows are a directed acyclic graph (DAG).
+We can visualize the relationship between the rules (a simplified view of the DAG) in our workflow:
+
+![Rulegraph for Workflow](./assets/rulegraph.png)
+
+See `dag.pdf`, `filegraph.pdf`, `rulegraph.pdf` for alternative visualizations.
