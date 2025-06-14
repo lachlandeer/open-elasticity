@@ -1,3 +1,6 @@
+## estimate_iv_nested_logit_model:  Estimates nested logit demand model with 
+##                                  hausman instruments and nests at the 
+##                                  private label / national brand level
 rule estimate_iv_nested_logit_model:
     input:
         script = config["src_analysis"] + "estimate_iv_nested_logit.R",
@@ -9,6 +12,7 @@ rule estimate_iv_nested_logit_model:
     shell:
         "{runR} {input.script} --data {input.data} --out {output.model} > {log} 2>&1"
 
+## compute_brand_elasticities:  Computes brand price elasticities 
 rule compute_brand_elasticities:
     input:
         script = config["src_analysis"] + "compute_brand_elasticities.R",

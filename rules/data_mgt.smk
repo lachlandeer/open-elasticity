@@ -18,7 +18,7 @@ rule clean_purchases_raw:
             > {log} {logAll}"
 
 ## construct_panelist_activity: builds active panelist denominator by country-week
-## using a rolling window of past weeks (e.g., 26 weeks by default)
+##                              using a rolling window of past weeks (e.g., 26 weeks by default)
 rule construct_panelist_activity:
     input:
         script = config["src_data_mgt"] + "construct_panelist_activity.R",
@@ -119,8 +119,9 @@ rule merge_private_label:
     shell:
         "{runR} {input.script} --data {input.data} --pl_file {input.pl_info} --out {output.merged} > {log} 2>&1"
 
-## merge_private_label_start: appends private label classification to trimmed (start only) brand panel
-rule merge_private_label_start:
+## merge_private_label_elasticities: appends private label classification to trimmed (start only) 
+##                            brand panel for elasticity computation 
+rule merge_private_label_elasticities:
     input:
         script   = config["src_data_mgt"] + "merge_private_label.R",
         data     = config["out_data"] + "brand_panel_burnin_eur_trimmed_start.csv",
@@ -198,7 +199,8 @@ rule convert_prices_to_eur:
     shell:
         "{runR} {input.script} --data {input.data} --rates {input.rates} --out {output.data} > {log} 2>&1"
 
-# Trim to common country-week overlap
+## trim_common_weeks:  Trim to common country-week to include common weeks across all countries
+##                     for demand estimation 
 rule trim_common_weeks:
     input:
         script = config["src_data_mgt"] + "trim_common_weeks.R",
@@ -210,8 +212,9 @@ rule trim_common_weeks:
     shell:
         "{runR} {input.script} --data {input.data} --out {output.trimmed} > {log} 2>&1"
 
-# Trim to common country-week start_only
-rule trim_common_weeks_start_only:
+## trim_common_weeks_elasticity:  Trim to common country-week to include weeks starting from first
+##                                common week to end for brand elasticity computation 
+rule trim_common_weeks_elasticity:
     input:
         script = config["src_data_mgt"] + "trim_common_weeks_start.R",
         data   = config["out_data"] + "brand_panel_burnin_eur.csv"
