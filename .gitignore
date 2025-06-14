@@ -5,3 +5,4 @@ out/
 logs/
 .snakemake
 .Rproj.user
+*.zip
