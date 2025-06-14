@@ -32,6 +32,8 @@ This project builds a demand estimation pipeline for scanner data on meat substi
 │   │   └── compute_brand_elasticities.R
 │   ├── data-management/
 │   │   └── [scripts for all stages of data processing]
+│   ├── data/
+│   │   └── purchases.csv # raw data for the project
 ├── assets/               # DAG and graph visualizations
 ├── renv/, renv.lock      # R environment (via `renv`)
 ├── requirements.txt      # Python packages for Snakemake execution
