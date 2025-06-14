@@ -1,6 +1,6 @@
 #' compute_brand_retailer_shares.R
 #'
-#' contributors: @lachlandeer
+#' contributors:  
 #'
 #' Compute weekly brand-retailer market shares and outside shares
 

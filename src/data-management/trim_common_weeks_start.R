@@ -1,6 +1,6 @@
 #' trim_by_common_weeks_start.R
 #'
-#' contributors: @lachlandeer
+#' contributors:  
 #'
 #' Keeps only weeks after first week where all countries present. Reports dropped weeks and retained share.
 

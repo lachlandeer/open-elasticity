@@ -1,6 +1,6 @@
 #' construct_hausman_iv.R
 #'
-#' contributors: @lachlandeer
+#' contributors:  
 #'
 #' Compute Hausman-style IVs: price_other, price_other_within_nest,
 #' and numbered country-level robustness IVs.

@@ -1,6 +1,6 @@
 #' assign_privatelabel_nests.R
 #'
-#' contributors: @lachlandeer
+#' contributors:  
 #'
 #' Assign nest classification (PrivateLabel vs NationalBrand) based on brand-level PL status.
 #' Also computes number of within-nest competitors by country-week.

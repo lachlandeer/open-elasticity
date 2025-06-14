@@ -1,6 +1,6 @@
 # Rules: help
 #
-# Contributors: @lachlandeer
+# Contributors:  
 
 ## help_analysis  : prints help comments for Snakefile in analysis directory
 rule help_analysis:

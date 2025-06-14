@@ -1,6 +1,6 @@
 #' convert_prices_to_eur.R
 #'
-#' contributors: @lachlandeer
+#' contributors:  
 #'
 #' Convert all brand prices to euros using weekly exchange rates
 

@@ -1,6 +1,6 @@
 #' clean_purchases_raw.R
 #'
-#' contributors: @lachlandeer
+#' contributors:  
 #'
 #' Clean raw purchase data: enforce column types, filter invalid values, and construct ISO year-week variable
 

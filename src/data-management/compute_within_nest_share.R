@@ -1,6 +1,6 @@
 #' compute_within_nest_share.R
 #'
-#' contributors: @lachlandeer
+#' contributors:  
 #'
 #' Adds within-nest shares for each brand-week-country observation.
 

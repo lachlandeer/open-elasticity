@@ -1,6 +1,6 @@
 #' construct_panelist_activity.R
 #'
-#' contributors: @lachlandeer
+#' contributors:  
 #'
 #' Creates a table of active panelists per week, using a rolling window.
 

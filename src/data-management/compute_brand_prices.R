@@ -1,6 +1,6 @@
 #' compute_brand_prices.R
 #'
-#' contributors: @lachlandeer
+#' contributors:  
 #'
 #' Computes volume-weighted brand-retailer-level prices per country-week
 

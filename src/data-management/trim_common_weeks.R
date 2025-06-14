@@ -1,6 +1,6 @@
 #' trim_by_common_weeks.R
 #'
-#' contributors: @lachlandeer
+#' contributors:  
 #'
 #' Keeps only weeks shared across all countries. Reports dropped weeks and retained share.
 

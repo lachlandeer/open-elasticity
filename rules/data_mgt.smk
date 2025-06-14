@@ -1,6 +1,6 @@
 # Rules: data-management
 #
-# Contributors: @lachlandeer
+# Contributors:  
 
 # --- Build Rules --- #
 ## clean_purchases_raw: cleans raw purchase data into harmonized panel format

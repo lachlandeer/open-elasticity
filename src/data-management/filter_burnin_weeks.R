@@ -1,6 +1,6 @@
 #' filter_burnin_weeks.R
 #'
-#' contributors: @lachlandeer
+#' contributors:  
 #'
 #' Drops early burn-in weeks from the merged brand panel using a country-specific XX-week window.
 

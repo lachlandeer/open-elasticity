@@ -1,6 +1,6 @@
 #' merge_private_label.R
 #'
-#' contributors: @lachlandeer
+#' contributors:  
 #'
 #' Merges private label flag into the brand panel data.
 

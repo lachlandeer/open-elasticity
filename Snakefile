@@ -1,5 +1,5 @@
 # Main Workflow - Open elasticity: Meat Substitutes
-# Contributors: @lachlandeer
+# Contributors:  
 
 import glob
 

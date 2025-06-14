@@ -1,6 +1,6 @@
 #' filter_study_brands.R
 #'
-#' contributors: @lachlandeer
+#' contributors:  
 #'
 #' Filter brand-week panel data to include only selected brands per country.
 #' Filter brands are specified by the many analyst organizers

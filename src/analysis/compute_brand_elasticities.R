@@ -1,6 +1,6 @@
 # compute_brand_elasticities.R
 # 
-# contributors: @lachlandeer
+# contributors:  
 #
 # Computes brand-level own-price elasticities using delta method, based on nested logit IV model
 

@@ -1,6 +1,6 @@
 #' merge_brand_panel.R
 #'
-#' contributors: @lachlandeer
+#' contributors:  
 #'
 #' Join brand-retailer-week share and price data into a single panel
 

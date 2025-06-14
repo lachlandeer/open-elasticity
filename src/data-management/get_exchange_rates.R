@@ -1,6 +1,6 @@
 #' get_exchange_rates.R
 #'
-#' contributors: @lachlandeer
+#' contributors:  
 #'
 #' Fetches weekly EUR→USD and EUR→GBP exchange rates from Yahoo Finance (2014–2023)
 

@@ -1,6 +1,6 @@
 # estimate_iv_nested_logit_model.R
 #
-# contributors: @lachlandeer
+# contributors:  
 #
 # Estimates nested logit IV model with fixed effects and saves the model object
 
